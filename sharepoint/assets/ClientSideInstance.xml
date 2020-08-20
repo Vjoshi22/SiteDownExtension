@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <ClientSideComponentInstance
+        Title="PmoSiteStatus"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ComponentId="e2c03f9b-6221-4333-b51b-119c9a02ac6e"
+        Properties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </ClientSideComponentInstance>
+</Elements>
