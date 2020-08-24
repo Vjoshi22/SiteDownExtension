@@ -3,7 +3,7 @@
   "solution": {
     "name": "yash-pmo-site-status-client-side-solution",
     "id": "0c1d640a-5c70-4e3c-8bfd-f2530933a60f",
-    "version": "1.0.0.0",
+    "version": "1.1.0.0",
     "includeClientSideAssets": true,
     "isDomainIsolated": false,
     "features": [

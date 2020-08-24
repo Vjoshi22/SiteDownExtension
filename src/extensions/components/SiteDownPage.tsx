@@ -24,9 +24,14 @@ export interface IreactSiteState {
     SiteStatus: string;
     Image: string;
     userMatched: boolean;
+    Key:string;
+    Value:string;
+    GroupPermission:string;
+    Category:string;
+    MessageToShow:string;
 }
 
-var listGUID = 'af951c71-5ca6-4bf8-b29e-55c72a25adf8';
+var listGUID = '893599b8-df17-4aa6-b302-53e6d5dfeff2';
 var itemID = '1';
 var loggedInUser;
 var ownersGroup;
@@ -39,7 +44,12 @@ export default class SiteDownPage extends React.Component<IreactSiteProps, Ireac
             SiteStatus: '',
             Title: '',
             Image: '',
-            userMatched: false
+            userMatched: false,
+            Key:'',
+            Value:'',
+            GroupPermission:'',
+            Category:'',
+            MessageToShow:''
         }
     }
     public componentDidMount() {
@@ -63,12 +73,12 @@ export default class SiteDownPage extends React.Component<IreactSiteProps, Ireac
     public render(): JSX.Element {
         return (
             <div id="customMessage_Top">
-                <h3>{this.state.Title}</h3>
+                <h4>{this.state.MessageToShow}</h4>
             </div>
         )
     }
     private _getConfiguration() {
-        const url = `${this.props.context.pageContext.web.absoluteUrl}/_api/web/lists('${listGUID}')/items(${itemID})`;
+        const url = `${this.props.context.pageContext.web.absoluteUrl}/_api/web/lists('${listGUID}')/items?$select=*&$filter=Key eq 'IS SITE DOWN'`;
         return this.props.context.spHttpClient.get(url, SPHttpClient.configurations.v1,
             {
                 headers: {
@@ -80,29 +90,35 @@ export default class SiteDownPage extends React.Component<IreactSiteProps, Ireac
             })
             .then((item): void => {
                 this.setState({
-                    Title: item.Title,
-                    Image: item.Image.Url,
-                    SiteStatus: item.SiteStatus
+                    Key: item.value[0].Key,
+                    Value: item.value[0].Value,
+                    GroupPermission: item.value[0].GroupPermission,
+                    Category: item.value[0].Category,
+                    MessageToShow: item.value[0].MessageToShow
                 })
                 this._getCurrentUser();
                 // this._checkSiteStatus();
             })
     }
+    //check the Status and applied the Overlay
     private _checkSiteStatus() {
-        if (this.state.SiteStatus == "Down" && !this.state.userMatched) {
+        if (this.state.Value == "Yes" && !this.state.userMatched) {
             $("#customMessage_Top").show();
-            $('#spSiteHeader').nextAll().hide();
+            $('#spSiteHeader').nextAll().remove();
+            $('.Files-mainColumn').remove();
             $('#customMessage_Top').css({
                 "position": "absolute",
                 "top": "50%",
                 "left": "50%",
-                "font-size": "50px",
+                "font-size": "25px",
                 "color": "black",
                 "transform": "translate(-50%,-50%)",
-                "-ms-transform": "translate(-50%,-50%)"
+                "-ms-transform": "translate(-50%,-50%)",
+                "width":"80%"
             });
-        } else if (this.state.SiteStatus == "Down" && this.state.userMatched) {
+        } else if (this.state.Value == "Yes" && this.state.userMatched) {
             $("#customMessage_Top").show();
+            $('.Files-mainColumn').show();
             $('#spSiteHeader').nextAll().show();
         } else {
             $("#customMessage_Top").remove();
